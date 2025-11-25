@@ -1,0 +1,28 @@
+<style>
+body { font-family: '微軟正黑體', Arial; background: #faf9fc; }
+.main-wrap {
+    max-width: 540px; margin: 38px auto 0 auto;
+    background: #f7f0fa; border: 3px solid #cba4f5;
+    border-radius: 20px;
+    box-shadow: 0 6px 22px #ebddfa;
+    padding: 38px 40px 30px 40px;
+}
+h2 { color: #9223b8; margin-bottom: 24px; border-bottom: 2.5px solid #9223b8; padding-bottom: 6px; letter-spacing: 2px;}
+form { margin-top: 22px; }
+form p { font-size: 16px; margin-bottom: 15px; }
+.register-btn {
+    margin: 20px auto 0 auto; background: #9223b8; color: #fff; border: 2px solid #cba4f5; padding: 10px 38px;
+    border-radius: 8px; font-weight: bold; font-size: 17px; cursor: pointer; box-shadow: 0 3px 18px #dac6eb;
+    display: block; text-align: center; transition: background 0.2s, border-color 0.2s;
+}
+.register-btn:hover { background: #a749d1; border-color: #7e379c;}
+</style>
+
+<div class="main-wrap">
+    <h2>註冊</h2>
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="register-btn">註冊</button>
+    </form>
+</div>
