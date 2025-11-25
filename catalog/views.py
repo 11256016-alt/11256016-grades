@@ -1,10 +1,44 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Student, Course, Enrollment
+from .models import Student, Course, Enrollment, StudentAccount
 from django import forms
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+
+def student_register(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        email = request.POST['email']
+        password = request.POST['password']
+
+        # 建立新帳號
+        account = StudentAccount(username=username, email=email)
+        account.set_password(password)
+        account.save()
+
+        return redirect('student_login')  # 註冊完成後導向登入頁
+    return render(request, 'student_register.html')
+
+def student_login(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+
+        try:
+            account = StudentAccount.objects.get(username=username)
+            if account.check_password(password):
+                # 簡單做法：把帳號存進 session
+                request.session['student_id'] = account.id
+                return redirect('score_main', student_id=account.id)
+        except StudentAccount.DoesNotExist:
+            pass
+
+    return render(request, 'student_login.html')
+
+def student_logout(request):
+    request.session.flush()  # 清除 session
+    return redirect('student_login')
 
 def register_view(request):
     if request.method == 'POST':
